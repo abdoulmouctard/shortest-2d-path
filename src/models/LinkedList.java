@@ -9,6 +9,7 @@ public class LinkedList<E> {
         this.node = node;
     }
 
+
     public Node<E> getNode() {
         return node;
     }
@@ -32,7 +33,7 @@ public class LinkedList<E> {
     }
 
     public Node<E> lastNodeOf(Node<E> node) {
-        if (node == null) return null; // maybe throw an exception here ?
+        if (node == null) return null; // Maybe, should we throw an exception here ?
         if (!node.hasNext()) return node;
         return lastNodeOf(node.getNext());
     }
@@ -88,10 +89,21 @@ public class LinkedList<E> {
 
         boolean test = predicate.test(first, second);
 
-        E first_element = test ? first.getElement() : second.getElement();
-        E second_element = test ? second.getElement() : first.getElement();
+        E element;
+        Node<E> f_tmp;
+        Node<E> s_tmp;
 
-        return new Node<>(first_element, new Node<>(second_element, merge(first.getNext(), second.getNext())));
+        if (test) {
+            element = first.getElement();
+            f_tmp = first.getNext();
+            s_tmp = second;
+        } else {
+            element = second.getElement();
+            f_tmp = first;
+            s_tmp = second.getNext();
+        }
+
+        return new Node<E>(element, merge(f_tmp, s_tmp, predicate));
     }
 
 }
